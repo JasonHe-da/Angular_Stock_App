@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary" style="position: relative;"> 
+    <a class="navbar-brand mb-0 h1" routerLink="/search/home" (click)="removeActive()" >Stock Search</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item active">
+            <a 
+            id="search_button"
+            class="nav-link"
+            routerLink="/search/{{params}}"
+            routerLinkActive="activebutton"
+            (click)="showSearch()" 
+            >Search</a>
+          </li>
+          <li class="nav-item">
+            <a 
+            id="watch_button"
+            class="nav-link" 
+            routerLink="/watchlist" 
+            routerLinkActive="activebutton" 
+            (click)="showWatch()"
+            >Watchlist</a>
+          </li> 
+          <li class="nav-item">
+            <a 
+            id="port_button"
+            class="nav-link" 
+            routerLink="/portfolio" 
+            routerLinkActive="activebutton" 
+            (click)="showPort()"
+            >Portfolio</a>
+          </li> 
+        </ul>
+      </div>
+  </nav>
+  <!-- [class.phase-active]="activeButton == 2" -->

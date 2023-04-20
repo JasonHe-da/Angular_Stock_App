@@ -1,0 +1,36 @@
+.input-group{
+    margin: 100px;
+}
+
+.container-fluid{
+    width: 320px; 
+    margin-top: 20px;
+    border: 2px solid blue;
+    border-radius: 15px;
+}
+
+.form-outline{
+    display: flex; 
+    height:50px;
+}
+
+input:focus{
+    outline: none;
+    box-shadow: none;
+}
+#search_button{
+    height: 50px;
+    background-color: transparent;
+    border: 0;
+}
+#delete_button{
+    height: 50px;
+    background-color: transparent;
+    border: 0;
+}
+
+/* .cdk-overlay-container{
+    text-align: center;
+    justify-content: center;
+    top: 170px;
+} */

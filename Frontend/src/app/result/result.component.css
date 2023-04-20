@@ -1,0 +1,44 @@
+/* .unfillSvg{
+    display: block;
+  }
+
+.fillSvg{
+    display: none;
+    fill:yellow;
+} */
+#img1{
+  /* height:40px;
+  width: 40px; */
+}
+
+.buy_button{
+  display: inline-block;
+  border: none;
+  color: white;
+  width: 100px;
+  padding: 15px 20px;
+  background-color: #4CAF50;
+  border-radius: 12px;
+  font-size: 16px;
+}
+
+.sell_button{
+  display: inline-block;
+  border: none;
+  color: white;
+  width: 100px;
+  padding: 15px 20px;
+  background-color: #f44336;
+  border-radius: 12px;
+  font-size: 16px;
+}
+#buyAmount{
+  width:100px;
+}
+#SellAmount{
+  width:100px;
+}
+/* :host ::ng-deep .mat-tab-header {
+  position: fixed;
+} */
+

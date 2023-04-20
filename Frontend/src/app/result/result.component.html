@@ -1,0 +1,301 @@
+<app-search-bar></app-search-bar>
+<div [innerHTML]="element"></div>
+<div class="loading_temp" *ngIf="loading_profile && loading_quote && loading_history && loading_recommend &&loading_peers&& loading_news && loading_social_trend && loading_earning">
+  <mat-spinner style="margin: auto;margin-top: 50px;"></mat-spinner>
+</div>
+
+
+<ngb-alert #selfClosingAlert *ngIf="successMessage" type="success" (closed)="successMessage = false" style="text-align: center;margin-top: 20px;">{{successMessage_buy}}</ngb-alert>
+<ngb-alert #selfClosingAlert *ngIf="successMessage_sell_bool" type="danger" (closed)="successMessage_sell_bool = false" style="text-align: center;margin-top: 20px;">{{successMessage_sell}}</ngb-alert>
+<ngb-alert #selfClosingAlert *ngIf="successMessage_watchlist" type="success" (closed)="successMessage_watchlist = false" style="text-align: center;margin-top: 20px;">{{successMessage_watchMessage}}</ngb-alert>
+<ngb-alert #selfClosingAlert *ngIf="successMessage_unadd_watchlist" type="danger" (closed)="successMessage_unadd_watchlist = false" style="text-align: center;margin-top: 20px;">{{successMessage_unadd_watchMessage}}</ngb-alert>
+<ngb-alert #selfClosingAlert *ngIf="!exist_value" type="danger" (closed)="ticker_not_found = false" style="text-align: center;margin-top: 20px;">No data found. Please enter a valid Ticker</ngb-alert>
+<div class="big_con" *ngIf="exist_value && !loading_profile && !loading_quote && !loading_peers">
+
+<div class="row" style="justify-content: center;margin-top: 50px;">
+    <div class="col-5 col-md-3">
+            <div fxLayout="row wrap" style="padding: 10px;width: fit-content;">
+                <div class="col" style="font-size: xx-large;">{{this.profile.ticker}}</div>
+                <div class="col">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="currentColor" class="bi bi-star" viewBox="0 0 16 16" (click)="onClick()" [ngClass]="{'unfillSvg': unfillSvg}" [ngStyle]="{'display': svg1}">
+                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                    </svg>
+        
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="20" fill="yellow" class="bi bi-star-fill" viewBox="0 0 16 16" (click)="onClick()" [ngClass]="{'fillSvg': fillSvg}" [ngStyle]="{'display': svg2}">
+                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="row" style="font-size: large;padding: 10px;margin: 5px;">{{this.profile.name}}</div>
+            <div class="row" style="font-size: medium;padding: 10px;margin: 5px;">{{this.profile.exchange}}</div>
+            <div class="row">
+                <div class="btn-group" style="padding: 10px;">
+                    <!-- <button class="btn btn-lg btn-outline-primary" (click)="buy_stock(content)">Launch demo modal</button> -->
+                    <button class="buy_button" style="padding: 10px;"(click)="buy_stock(content1)">Buy</button>
+                    <button class="sell_button" style="padding: 10px;"*ngIf="hold_or_not" (click)="sell_stock(content2)">Sell</button>
+                </div>
+            </div>
+            <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->
+    </div>
+    <div class=" col-2 col-md-4">
+        <div class="text-center" [innerHTML]="element2"></div>
+    </div>
+    
+    <div class="col-5 col-md-3" style="padding: 10px;">
+        <div class=" text-end" [ngStyle]="{'color': going_up? 'green' : 'red'}" style="font-size: xx-large;">{{this.quote.c}}</div>
+        <div fxLayout="row" fxLayoutAlign="end center" [ngStyle]="{'color': going_up? 'green' : 'red'}" >
+          <div class=" text-end" style="font-size: large;padding: 10px;margin-top: 10px;">
+            <svg xmlns="http://www.w3.org/2000/svg" *ngIf="!going_up" [ngStyle]="{'color': going_up? 'green' : 'red'}" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+              <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" *ngIf="going_up" [ngStyle]="{'color': going_up? 'green' : 'red'}" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+              <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+            </svg>
+            {{this.quote.d}}({{this.quote.dp}}%)
+          </div>
+        </div>
+        
+        <div class=" text-end" style="font-size: medium ;padding: 10px;margin-top: 10px;" [innerHTML]="current_time"></div>
+    </div>
+</div>
+<div class="row" >
+  <div class="text-center" *ngIf="this.Open; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <div class="text-center" [ngStyle]="{'color':'green'}"    style="margin-top: 30px;">Market is {{this.Market_status}}</div>
+        </ng-template> 
+        <ng-template #elseBlock>
+            <div class="text-center" [ngStyle]="{'color': 'red'}" style="margin-top: 30px;">
+                Market {{this.Market_status}} on {{this.current_time2}}
+            </div>
+        </ng-template>
+</div>
+
+<mat-tab-group mat-align-tabs="center" style="text-align: center;" (selectedTabChange)="onTabClick($event)" dynamicHeight dynamicWidth>
+    <mat-tab label="Summary">
+      <div class="row justify-content-center">
+        <div class="col-md-6 col-xs-12">
+          <div class="row justify-content-center">
+            <div class="Price_his">
+                  <div class="listitem" style="padding: 10px;">High Price: {{this.quote.h}}</div>
+                  <div class="listitem" style="padding: 10px;">Low Price: {{this.quote.l}}</div>
+                  <div class="listitem" style="padding: 10px;">Open Price: {{this.quote.o}}</div>
+                  <div class="listitem" style="padding: 10px;">Prev. Close: {{this.quote.pc}}</div>
+            </div>
+          </div>
+
+          <div class="row">
+             <div class="AboutCompany" style="margin-top: 20px;">
+                <h2 style="text-decoration: underline;font-weight: bold;">About the company</h2>
+                <div class="Company_info" style="text-align: left;">
+                  <div class="listitem" style="padding: 10px;">IPO Start Date: {{this.profile.ipo}}</div>
+                  <div class="listitem" style="padding: 10px;">Industry: {{this.profile.finnhubIndustry}}</div>
+                  <div class="listitem" style="padding: 10px;">
+                    Webpage: <a href={{this.profile.weburl}} target="_blank">{{this.profile.weburl}}</a>
+                  </div>
+                  <div class="peers-comany" style="padding: 10px;">Company peers:</div>
+                  <div fxLayout="row" fxLayoutAlign="start center">
+                    <div *ngFor="let peer of peers_company;">
+                      <a class="nav-link" routerLink="/search/{{peer}}" routerLinkActive="activebutton" style="width: fit-content;padding: 5px;">{{peer}},</a>
+                    </div>
+                  </div>
+                </div>
+             </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-12">
+         
+            <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="WorkdayChartOptions"
+            [callbackFunction]="chartCallback3"
+            style="width: 100%; height: 400px; display: flex;"
+            ></highcharts-chart>
+          
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label="Top News">
+      <div class="content">
+        <div fxLayout="row wrap" fxLayoutGap="16px grid">
+          <div fxFlex="50%" fxFlex.xs="100%" fxFlex.sm="100%" *ngFor="let news of news_list">
+            <mat-card class="mat-elevation-z4" >
+              <div class="row">
+                <div class="col-md-3 col-12">
+                  <img mat-card-image src= {{news[&quot;image&quot;]}} style="width:120px;height:120px;margin: auto;">
+                </div>
+                <div class="col-md-9 col-12" style="padding: 45px;">
+                  <p>{{news["headline"]}}</p>
+                </div>
+              </div>
+              <a href="javascript:void(0)" class="stretched-link" (click)="clickNews(content3, news[&quot;id&quot;],news[&quot;datetime&quot;])" ></a>
+            </mat-card>
+          </div>
+        </div>
+        </div>
+        
+
+
+
+    </mat-tab>
+    <mat-tab label="Charts" (clicke)="reflowBigChart()">
+      <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [constructorType]="'stockChart'"
+            [options]="HistoryChartOptions"
+            [callbackFunction]="chartCallback"
+            style="width: 100%; height: 400px; display: block;"
+      ></highcharts-chart>
+    </mat-tab>
+    <mat-tab label="Insights">
+      <div class="col">
+        <div class="row">
+          <div class="social_title" style="text-align: center;font-size: x-large; margin-top: 30px;">
+            Social Sentiments
+          </div>
+          <table  class="table-bordered table-striped"style="margin-top: 30px; padding:5px;margin: auto; width: 60%;">
+            <tr style="background-color: lightsteelblue;">
+              <th style="padding: 10px;">{{this.profile.name}}</th>
+              <th style="padding: 10px;">Reddit</th>
+              <th style="padding: 10px;">Twitter</th>
+            </tr>
+            <tr>
+              <td style="background-color: lightsteelblue;padding: 10px ">Total Mentions</td>
+              <td style="padding: 10px;">{{this.reddit["TotalMentions"]}}</td>
+              <td style="padding: 10px;">{{this.twitter["TotalMentions"]}}</td>
+            </tr>
+            <tr>
+              <td style="background-color: lightsteelblue;padding: 10px">Positive Mentions</td>
+              <td style="padding: 10px;">{{this.reddit["PositiveMentions"]}}</td>
+              <td style="padding: 10px;">{{this.twitter["PositiveMentions"]}}</td>
+            </tr>
+            <tr>
+              <td style="background-color: lightsteelblue;padding: 10px">Negative Mentions</td>
+              <td style="padding: 10px;">{{this.reddit["NegativeMentions"]}}</td>
+              <td style="padding: 10px;">{{this.twitter["NegativeMentions"]}}</td>
+            </tr>
+          </table>
+
+        </div>
+
+        <div class="row" style="margin-top: 20px;">
+          <div class="col-xs-12 col-md-6">
+            <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="RecommChartOptions"
+            [callbackFunction]="chartCallback1"
+            style="width: 100%; height: 400px; display: flex;"
+            ></highcharts-chart>
+          </div>
+          <div class="col-xs-12 col-md-6">
+            <highcharts-chart 
+            [Highcharts]="Highcharts"
+            [options]="EPSSurprises"
+            [callbackFunction]="chartCallback2"
+            style="width: 100%; height: 400px;  display: flex"
+            ></highcharts-chart>
+          </div> 
+
+        </div>
+          
+
+      </div>
+
+
+    </mat-tab>
+</mat-tab-group>
+
+</div>
+
+
+
+
+<!-- buy and sell modal section -->
+<ng-template #content1 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title1">{{this.profile.ticker}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <div>Current Price: {{this.quote.c}}</div>
+          <div>Money in Wallet: ${{money_amount_left}}</div>
+          <div class="input-group">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div>Quantity</div>
+              <input type="number" id="buyAmount" class="form-control" (input)="update_price()" placeholder="share" [(ngModel)]="amount_share" mdbInput type="number">
+            </div>
+             
+
+          </div>
+          <div *ngIf="error_buy" [ngStyle]="{'color': 'red'}">{{NotEnoughMoney}}</div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer justify-content-between" >
+      <div>Total: {{estimate_amount}}</div>
+      <button type="button" class="btn btn-outline-dark" (click)="transaction()" (click)="modal.close()" style="background-color : green;color:white;">Buy</button>
+    </div>
+  </ng-template>
+
+  <ng-template #content2 let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title2">{{this.profile.ticker}}</h4>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <div>Current Price: {{this.quote.c}}</div>
+          <div>Money in Wallet: ${{money_amount_left}}</div>
+          <label for="sellAmount">Quantity</label>
+          <div class="input-group">
+            <div fxLayout="row" fxLayoutAlign="start center">
+              <div>Quantity</div>
+              <input type="number" id="SellAmount" class="form-control" (input)="update_price_sell()" placeholder="share" [(ngModel)]="amount_share_sell" mdbInput type="number">
+            </div>
+          </div>
+          <div *ngIf="error_sell" [ngStyle]="{'color': 'red'}">{{NotEnoughStock}}</div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer justify-content-between">
+      <div>Total: {{estimate_amount_sell}}</div>
+      <button type="button" class="btn btn-outline-dark" (click)="transaction_sell()" (click)="modal.close()" style="background-color : red;color:white;">Sell</button>
+    </div>
+  </ng-template>
+
+
+  <ng-template #content3 let-modal>
+    <div class="modal-header">
+      <div class="row">
+        <div class="modal-title" id="modal-basic-title3" style="font-size: x-large;font-weight: bold;">{{this.news_details.news_detail["source"]}}</div>
+        <div class="modal-title" id="modal-basic-title3"style="font-size: large;">{{this.news_date}}</div>
+      </div>
+      <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+    </div>
+    <div class="modal-body">
+      <div class="news_headline" style="font-size: large;font-weight: bold;">
+        <h4>{{this.news_details.news_detail["headline"]}}</h4>
+      </div>
+      <div class="news_summary" style="font-size: medium;">
+        <h5>{{this.news_details.news_detail["summary"]}}</h5>
+      </div>
+      <div class="news_link">
+        <h5>For more details click <a href={{this.news_details.news_detail[&quot;url&quot;]}} target="_blank">here</a></h5>
+      </div>
+
+      <div class="share_box justify-content-start" style="margin-left: 3%;margin-right: 3%;border: 1px solid lightgray;border-radius: 8px;">
+        <div class="share" style="margin-top: 20px;margin-bottom: 20px;margin-left: 20px;">Share</div>
+        <a style="margin-left: 10px;" class="twitter-share-button" target="_blank" href="https://twitter.com/intent/tweet?text={{this.news_details.news_detail[&quot;headline&quot;]}} - sources {{this.news_details.news_detail[&quot;url&quot;]}}"> 
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="lightblue"viewBox="0 0 512 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+        </a>
+        <a style="margin-left: 20px;" href="https://www.facebook.com/sharer/sharer.php?u={{this.news_details.news_detail[&quot;url&quot;]}}" target="_blank" rel="noopener">
+          <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="blue"viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"/></svg>
+        </a>
+      </div>
+    </div>
+  </ng-template>
+
+
+  <!-- *ngIf="close_modal; then modal.close()" -->

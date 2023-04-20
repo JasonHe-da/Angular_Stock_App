@@ -1,0 +1,49 @@
+
+
+<!-- <ngb-alert type="alert.type" *ngFor = "let watch_list_item of Stock_info" [dismissible]="true" 
+             type='success'>
+    <strong>{{watch_list_item}}</strong>
+
+</ngb-alert> -->
+<div class="My_WatchList" style="margin-top: 80px;text-align: left; font-size: xx-large;">
+  My Watchlist
+</div>
+<ngb-alert *ngIf="have_watch_item" type="warning"  style="margin-top: 60px;text-align: center;">Currently you don't have any stock in your watchlist.</ngb-alert>
+<div class="text-center" style="margin-top: 60px;margin-left: 10%;margin-right: 10%;">
+    <div fxLayout="row wrap">
+      <div fxFlex="100%" fxFlex-xs="100%" *ngFor="let watch_list_item of Stock_info">
+        <mat-card class="mat-elevation-z4" style="margin-top: 20px;" >
+            <a href="javascript:void(0)" class="stretched-link" (click)="clickWatchList(watch_list_item[&quot;ticker&quot;])" ></a>
+          <div class="row-1" style="text-align: right;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" (click)="deleteWatchItem(watch_list_item[&quot;ticker&quot;])" height="25" fill="currentColor" style="position: relative; z-index: 1;"  class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+          </div>
+          <div class="row">
+            <div class="col-6" style="text-align: left;font-size: x-large;">
+                <p>{{watch_list_item["ticker"]}}</p>
+                <p>{{watch_list_item["name"]}}</p>
+              
+            </div>
+            <div class="col-6" style="text-align: right; font-size: x-large;">
+                <p [ngStyle]="{ 'color':  watch_list_item[&quot;going_up&quot;] ? 'green' : 'red' }">{{watch_list_item["c"]}}</p>
+                <div fxLayout="row" fxLayoutAlign="end center" [ngStyle]="{'color': watch_list_item[&quot;going_up&quot;] ? 'green' : 'red'}">
+
+                  <svg xmlns="http://www.w3.org/2000/svg"  *ngIf="!watch_list_item[&quot;going_up&quot;]" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" *ngIf="watch_list_item[&quot;going_up&quot;]"  width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                  </svg>
+                  <p [ngStyle]="{ 'color':  watch_list_item[&quot;going_up&quot;] ? 'green' : 'red' }" style="width: min-content;">  {{watch_list_item["d"]}} ({{watch_list_item["dp"]}}%) </p>
+
+
+
+                </div>
+                
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+</div>

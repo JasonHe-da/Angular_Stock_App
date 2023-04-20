@@ -1,0 +1,118 @@
+<div class="My_Portfolio" style="margin-top: 80px;text-align: left; font-size: xx-large;">
+  My Portfolio
+</div>
+<div class="My_Money" style="margin-top: 20px;text-align: left; font-size: x-large;">
+  Money In Wallet: ${{moneyinwallet}}
+</div>
+
+<ngb-alert #selfClosingAlert1  *ngIf="successMessage" type="success" (closed)="successMessage = false" style="margin-top: 60px; text-align: center;" >{{successMessage_buy}}</ngb-alert>
+<ngb-alert #selfClosingAlert1 *ngIf="successMessage_sell_bool" type="danger" (closed)="successMessage_sell_bool = false" style="margin-top: 60px;text-align: center;">{{successMessage_sell}}</ngb-alert>
+<ngb-alert *ngIf="own_nothing" type="warning"  style="margin-top: 60px;text-align: center;">Currently you don't have any stock.</ngb-alert>
+<div class="text-center" style="margin-top: 60px;margin-left: 10%;margin-right: 10%;">
+    <div fxLayout="row wrap">
+      <div fxFlex="100%" fxFlex-xs="100%" *ngFor="let portfolio_list of port_list">
+        <div class="card1" style="border: 1px;margin-top: 2%;">
+          <div class="row" style="background-color: rgba(221, 217, 217, 0.627);border: rgba(221, 217, 217, 0.627);padding: 15px;">
+            <div class="col-2" style="text-align: left;">
+                <h2>{{portfolio_list.ticker}}</h2>
+            </div>
+            <div class="col-10" style="text-align: left;">
+                <h3>{{portfolio_list.name}}</h3>
+            </div>
+          </div>
+          <div class="row" style="border: 0.2px wheat;">
+            <div class="col-6 col-md-3" style="text-align: left;">
+                <h3>Quantity:</h3>
+                <h3>Avg. Cost/Share:</h3>
+                <h3>Total Cost:</h3>
+            </div>
+            <div class="col-6 col-md-3" style="text-align: right;">
+                <h3>{{portfolio_list.quantity}}</h3>
+                <h3>{{portfolio_list.AverageCostShare}}</h3>
+                <h3>{{portfolio_list.total_cost}}</h3>
+            </div>
+            <div class="col-6 col-md-3" style="text-align: left;">
+                <h3>Change:</h3>
+                <h3>Current Price:</h3>
+                <h3>Market Value:</h3>
+            </div>
+            <div class="col-6 col-md-3" style="text-align: right;" [ngStyle]="{'color': (portfolio_list.Change > 0) ? 'green' : (portfolio_list.Change &lt; 0) ? 'red' : 'black'}" >
+                <h3>
+                  
+                  <svg xmlns="http://www.w3.org/2000/svg" *ngIf="(portfolio_list.Change &lt; 0)" [ngStyle]="{'color' : 'red'}" width="16" height="16" fill="currentColor" class="bi bi-caret-down-fill" viewBox="0 0 16 16">
+                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                  </svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" *ngIf="(portfolio_list.Change > 0)" [ngStyle]="{'color' : 'green'}" width="16" height="16" fill="currentColor" class="bi bi-caret-up-fill" viewBox="0 0 16 16">
+                    <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
+                  </svg>
+                  
+                  {{portfolio_list.Change}}</h3>
+                <h3>{{portfolio_list.CurrentPrice}}</h3>
+                <h3>{{portfolio_list.MarketValue}}</h3>
+            </div>
+          </div>
+          <div class="row" style="background-color: rgba(221, 217, 217, 0.627);">
+            <div class="btn-group" style="justify-content: end;" >
+              <button class="buy_button" (click)="buy_stock_port(content1, portfolio_list.ticker, portfolio_list.CurrentPrice)" style="background-color : green;color:white; width: 80px;height: 50px; margin: 5px;border-radius: 10px;">Buy</button>
+              <button class="sell_button" (click)="sell_stock_port(content2,portfolio_list.ticker, portfolio_list.CurrentPrice)"style="background-color : red;color:white;width: 80px;height: 50px; margin: 5px;border-radius: 10px;">Sell</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<ng-template #content1 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title1">{{current_buy_ticker}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <div>Current Price: {{current_buy_price}}</div>
+        <div>Money in Wallet: {{this.money_amount_left}}</div>
+        <div class="input-group">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div>Quantity</div>
+            <input id="buyAmount" type="number" class="form-control" (input)="update_price(current_buy_ticker)" placeholder="share" [(ngModel)]="amount_share" mdbInput>
+          </div>
+           
+
+        </div>
+        <div *ngIf="error_buy" [ngStyle]="{'color': 'red'}">{{NotEnoughMoney}}</div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-between" >
+    <div>Total: {{estimate_amount}}</div>
+    <button type="button" class="btn btn-outline-dark" (click)="transaction(current_buy_ticker)" (click)="modal.close()" style="background-color : green;color:white;">Buy</button>
+  </div>
+</ng-template>
+
+<ng-template #content2 let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title2">{{current_sell_ticker}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.close()"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3">
+        <div>Current Price: {{current_sell_price}}</div>
+        <div>Money in Wallet: {{money_amount_left}}</div>
+        <label for="sellAmount">Quantity</label>
+        <div class="input-group">
+          <div fxLayout="row" fxLayoutAlign="start center">
+            <div>Quantity</div>
+            <input type="number" id="SellAmount" type="number"class="form-control" (input)="update_price_sell(current_sell_ticker)" placeholder="share" [(ngModel)]="amount_share_sell" mdbInput type="number">
+          </div>
+        </div>
+        <div *ngIf="error_sell" [ngStyle]="{'color': 'red'}">{{NotEnoughStock}}</div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer justify-content-between">
+    <div>Total: {{estimate_amount_sell}}</div>
+    <button type="button" class="btn btn-outline-dark" (click)="transaction_sell(current_sell_ticker)" (click)="modal.close()" style="background-color : red;color:white;">Sell</button>
+  </div>
+</ng-template>
